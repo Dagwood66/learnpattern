@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var event = {
+        clientList: [],
+        listen: function (key, fn) {
+            if (!this.clientList[key]) {
+                this.clientList[key] = [];
+            }
+            this.clientList[key].push(fn);
+        },
+        trigger: function () {
+            var key = Array.prototype.shift.call(arguments),
+                fns = this.clientList[key];
+            if (!fns || fns.length === 0) {
+                return false;
+            }
+            for (var i = 0, fn; fn = fns[i++];) {
+                fn.apply(this, arguments);
+            }
+        },
+        remove: function () {
+            var key = Array.prototype.shift.call(arguments),
+                fns = this.clientList[key];
+            if (!fns || fns.length === 0) {
+                return false;
+            }
+            for (var i = 0, l = fns.length; i < l; i++) {
+                if (fns[i] === arguments[0]) {
+                    fns.splice(i, 1);
+                }
+            }
+        }
+    };
+
+    function installEvent(obj) {
+        for (let key in event) {
+            obj[key] = event[key];
+        }
+    }
+
+    var salesOffices = {};
+    var a, b;
+    installEvent(salesOffices);
+    salesOffices.listen('squareMeter88', a = function (price) {
+        console.log('价格= ' + price);
+    });
+    salesOffices.listen('squareMeter100', b = function (price) {
+        console.log('价格= ' + price);
+    });
+
+    salesOffices.remove("squareMeter88", a);
+    salesOffices.trigger('squareMeter88', 2000000);
+    salesOffices.trigger('squareMeter100', 3000000);
+</script>
+</body>
+</html>

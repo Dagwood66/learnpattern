@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var myImg = (function () {
+        var imgNode = document.createElement("img");
+        document.body.appendChild(imgNode);
+
+        return {
+            setSrc: function (src) {
+                imgNode.src = src;
+            }
+        };
+    })();
+
+    var proxy = (function () {
+        var img = new Image();
+        img.onload = function () {
+            myImg.setSrc(this.src);
+        };
+        return {
+            setSrc: function (src) {
+                myImg.setSrc("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1560763538927&di=9f4372c2d524869f82caf7f69071b117&imgtype=0&src=http%3A%2F%2Fimg.mp.sohu.com%2Fupload%2F20170710%2F18931bc763024d7cbd105e1b46804446.png");
+                img.src = src;
+            }
+        }
+    })();
+
+    proxy.setSrc('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1560763001925&di=76e7b600191ecc8e47bb77fd85b6efe5&imgtype=0&src=http%3A%2F%2Fbpic.588ku.com%2Fback_pic%2F03%2F74%2F88%2F5257bd085fa9e03.jpg');
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function CreateDiv(html) {
+        this.html = html;
+        this.init();
+    }
+
+    CreateDiv.prototype.init = function () {
+        var div = document.createElement("div");
+        div.innerHTML = this.html;
+        document.body.appendChild(div);
+    };
+
+    var ProxySingletonCrateDiv = (function () {
+        var instance;
+        return function (html) {
+            if (!instance) {
+                instance = new CreateDiv(html);
+            }
+            return instance;
+        }
+    })();
+
+    var a = new ProxySingletonCrateDiv("sven1");
+    var b = new ProxySingletonCrateDiv("sven2");
+
+    console.log(a === b);
+</script>
+</body>
+</html>

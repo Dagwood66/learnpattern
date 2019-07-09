@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function OffLightState(light) {
+        this.light = light;
+    }
+
+    OffLightState.prototype.buttonWasPressed = function () {
+        console.log('弱光'); // offLightState 对应的行为
+        this.light.setState(this.light.weakLightState); // 切换状态到 weakLightState
+    };
+
+    function WeakLightState(light) {
+        this.light = light;
+    }
+
+    WeakLightState.prototype.buttonWasPressed = function () {
+        console.log('强光'); // weakLightState 对应的行为
+        this.light.setState(this.light.strongLightState); // 切换状态到 strongLightState
+    };
+
+    function StrongLightState(light) {
+        this.light = light;
+    }
+
+    StrongLightState.prototype.buttonWasPressed = function () {
+        console.log('关灯'); // strongLightState 对应的行为
+        this.light.setState(this.light.offLightState); // 切换状态到 offLightState
+    };
+
+    function Light() {
+        this.offLightState = new OffLightState(this);
+        this.weakLightState = new WeakLightState(this);
+        this.strongLightState = new StrongLightState(this);
+        this.button = null;
+    }
+
+    Light.prototype.init = function () {
+        var button = document.createElement("button");
+        var self = this;
+        this.button = document.body.appendChild(button);
+        this.button.innerHTML = "开关";
+        this.currentState = this.offLightState;
+
+        this.button.onclick = function () {
+            self.currentState.buttonWasPressed();
+        }
+    };
+
+    Light.prototype.setState = function (newState) {
+        this.currentState = newState;
+    };
+
+    var light = new Light();
+    light.init();
+</script>
+</body>
+</html>

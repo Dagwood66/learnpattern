@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function before(fn, beforefn) {
+        return function () {
+            beforefn.apply(this, arguments);
+            return fn.apply(this, arguments);
+        }
+    }
+
+    function after(fn, afterfn) {
+        return function () {
+            var ret = fn.apply(this, arguments);
+            afterfn.apply(this, arguments);
+            return ret;
+        }
+    }
+
+    var a = before(function () {
+        console.log(1);
+    }, function () {
+        console.log(2);
+    });
+
+    var b = after(a, function () {
+        console.log(3);
+    });
+
+    var c = after(b, function () {
+        console.log(3);
+    });
+
+    c();
+</script>
+</body>
+</html>

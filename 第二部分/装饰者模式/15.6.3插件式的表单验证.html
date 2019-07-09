@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+用户名：<input id="username" type="text"/>
+密码： <input id="password" type="password"/>
+<input id="submitBtn" type="button" value="提交">
+<script>
+    Function.prototype.before = function (fn) {
+        var __this = this;
+        return function () {
+            if (fn.apply(this, arguments) === false) {
+                return;
+            }
+            return __this.apply(this, arguments);
+        }
+    };
+    var username = document.getElementById('username'),
+        password = document.getElementById('password'),
+        submitBtn = document.getElementById('submitBtn');
+    var validata = function () {
+        if (username.value === '') {
+            alert('用户名不能为空');
+            return false;
+        }
+        if (password.value === '') {
+            alert('密码不能为空');
+            return false;
+        }
+    };
+    var formSubmit = function () {
+        var param = {
+            username: username.value,
+            password: password.value
+        };
+        ajax('http:// xxx.com/login', param); // ajax 具体实现略
+    };
+
+    formSubmit = formSubmit.before(validata);
+
+    submitBtn.onclick = function () {
+        formSubmit();
+    };
+
+    function ajax() {
+        console.log(arguments);
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    // 发布/订阅  添加订阅 管理订阅 执行订阅
+    let salesOffices = {};
+
+    salesOffices.clientList = [];
+
+    salesOffices.listen = function (fn) {
+        salesOffices.clientList.push(fn);
+    };
+
+    salesOffices.trigger = function () {
+        for (let fn of salesOffices.clientList) {
+            fn.apply(this, arguments);
+        }
+    };
+
+    salesOffices.listen(function (price, squareMeter) {
+        console.log(price, squareMeter)
+    });
+
+    salesOffices.listen(function (price, squareMeter) {
+        console.log(price, squareMeter)
+    });
+
+    salesOffices.trigger(2000, 88);
+    salesOffices.trigger(2500, 188);
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button tag="login" id="button">点击打开登录浮层</button>
+<script>
+    Function.prototype.after = function (fn) {
+        var __self = this;
+        return function () {
+            var ref = __self.apply(this, arguments);
+            fn.apply(this, arguments);
+            return ref;
+        }
+    };
+
+    function showLogin() {
+        console.log("打开登录浮层");
+    }
+
+    function log(tag) {
+        console.log("上报标签:" + tag);
+    }
+
+    document.querySelector("button").onclick = showLogin.after(function () {
+        log(this.getAttribute("tag"));
+    });
+</script>
+</body>
+</html>

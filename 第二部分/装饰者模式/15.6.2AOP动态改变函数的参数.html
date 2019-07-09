@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    Function.prototype.before = function (fn) {
+        var __self = this;
+        return function () {
+            fn.apply(this, arguments);
+            return __self.apply(this, arguments);
+        }
+    };
+
+    function func(params) {
+        console.log(params)
+    }
+
+    var before = func.before(function (params) {
+        params.b = "b";
+    });
+    before({a: "a"});
+
+    function ajax(type, url, param) {
+        console.log(arguments);
+    }
+
+    ajax("get", "http://www.baidu.com", {name: "sven"});
+
+    function getToken() {
+        return "Token";
+    }
+
+    var ajax = ajax.before(function (type, url, param) {
+        param.Token = getToken();
+    });
+
+    ajax("get", "http://www.baidu.com", {name: "sven"});
+</script>
+</body>
+</html>
